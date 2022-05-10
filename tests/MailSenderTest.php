@@ -28,6 +28,10 @@ class MailSenderTest extends TestCase
             $senderPassword
         );
 
+        $mailSender->setHost('smtp.gmail.com')
+                   ->setPort(587)
+                   ->setCharset('UTF-8');
+
         // assert
         $this->assertTrue($mailSender->sendEmail(
             'subject',
@@ -53,6 +57,10 @@ class MailSenderTest extends TestCase
             $senderUsername,
             $senderPassword
         );
+
+        $mailSender->setHost('smtp.gmail.com')
+                   ->setPort(587)
+                   ->setCharset('UTF-8');
 
         // assert
         $this->assertFalse($mailSender->sendEmail(
