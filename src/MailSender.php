@@ -10,10 +10,10 @@ class MailSender
     private string $emailError;
     
     // Server settings
-    const SERVER_HOST    = 'smtp.gmail.com';
-    const SERVER_PORT    = 587;
     const SERVER_SECURE  = 'TLS';
-    const SERVER_CHARSET = 'UTF-8';
+    private string $host;
+    private int    $port;
+    private string $charset;
     
     // sender settings
     const SENDER_NAME  = 'Felizardo Chirindja';
@@ -24,6 +24,24 @@ class MailSender
         private string    $senderUsername,
         private string    $senderPassword
     ) { }
+
+    public function setHost(string $host): self
+    {
+        $this->host = $host;
+        return $this;
+    }
+
+    public function setPort(int $port): self
+    {
+        $this->port = $port;
+        return $this;
+    }
+
+    public function setCharset(string $charset): self
+    {
+        $this->charset = $charset;
+        return $this;
+    }
 
     public function getEmailError(): string
     {
@@ -43,13 +61,13 @@ class MailSender
 
         try {
             $this->phpMailer->isSMTP();
-            $this->phpMailer->Host       = self::SERVER_HOST;
+            $this->phpMailer->Host       = $this->host;
             $this->phpMailer->SMTPAuth   = true;
             $this->phpMailer->Username   = $this->senderEmail;
             $this->phpMailer->Password   = $this->senderPassword;
             $this->phpMailer->SMTPSecure = self::SERVER_SECURE;
-            $this->phpMailer->Port       = self::SERVER_PORT;
-            $this->phpMailer->CharSet    = self::SERVER_CHARSET;
+            $this->phpMailer->Port       = $this->port;
+            $this->phpMailer->CharSet    = $this->charset;
 
             $this->phpMailer->setFrom($this->senderEmail, $this->senderUsername);
             
