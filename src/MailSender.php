@@ -10,7 +10,7 @@ class MailSender
     private string $emailError;
     
     // Server settings
-    const SERVER_SECURE  = 'TLS';
+    private const SERVER_SECURE  = 'TLS';
     private string $host;
     private int    $port;
     private string $charset;
