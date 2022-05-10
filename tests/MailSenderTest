@@ -14,10 +14,11 @@ class MailSenderTest extends TestCase
     {
         // arrange
         $phpMailerStub = $this->createStub(PHPMailer::class);
-        $phpMailer = new PHPMailer();
+        $phpMailerStub->method('send')->willReturn(true);
+        // $phpMailer = new PHPMailer();
 
         // act
-        $mailSender = new MailSender($phpMailer);
+        $mailSender = new MailSender($phpMailerStub);
 
         // assert
         $this->assertTrue($mailSender->sendEmail(
@@ -30,16 +31,16 @@ class MailSenderTest extends TestCase
     public function testEmailNotSentWithInvalidEmail()
     {
         // arrange
-        $phpMailer = new PHPMailer();
+        // $phpMailer = new PHPMailer();
 
-        // act
-        $mailSender = new MailSender($phpMailer);
+        // // act
+        // $mailSender = new MailSender($phpMailer);
 
-        // assert
-        $this->assertFalse($mailSender->sendEmail(
-            'subject',
-            'body',
-            'felixchirindza30@gmail'
-        ));
+        // // assert
+        // $this->assertFalse($mailSender->sendEmail(
+        //     'subject',
+        //     'body',
+        //     'felixchirindza30@gmail'
+        // ));
     }
 }
