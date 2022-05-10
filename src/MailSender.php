@@ -34,9 +34,9 @@ class MailSender
         string $subject,
         string $body,
         string | array $addresses,
-        string | array $attachments = [],
-        string | array $ccs         = [],
-        string | array $bccs        = []
+        string | array $attachments          = [],
+        string | array $carbonCopies         = [],
+        string | array $blindCarbonCopies = []
     ): bool
     {
         $this->clearEmailError();
@@ -60,16 +60,10 @@ class MailSender
             $this->addAttachments($attachments);
 
             // add ccs
-            $ccs = is_array($ccs) ? $ccs : [$ccs];
-            foreach ($ccs as $cc) {
-                $this->phpMailer->addCC($cc);
-            }
+            $this->addCarbonCopies($carbonCopies);
 
             // add bccs
-            $bccs = is_array($bccs) ? $bccs : [$bccs];
-            foreach ($bccs as $bcc) {
-                $this->phpMailer->addBCC($bcc);
-            }
+            $this->addBlindCarbonCopies($blindCarbonCopies);
 
             $this->phpMailer->isHTML(true);
             $this->phpMailer->Subject = $subject;
@@ -95,17 +89,43 @@ class MailSender
         $this->phpMailer->addAddress($addresses);
     }
 
+    private function addCarbonCopies(string | array $carbonCopies): void
+    {
+        if (is_array($carbonCopies)) {
+            foreach ($carbonCopies as $carbonCopy) {
+                $this->phpMailer->addCC($carbonCopy);
+            }
+
+            return;
+        }
+
+        $this->phpMailer->addAddress($carbonCopies);
+    }
+
     private function addAttachments(string | array $attachments): void
     {
         if (is_array($attachments)) {
             foreach ($attachments as $attachment) {
-                $this->phpMailer->addAddress($attachment);
+                $this->phpMailer->addAttachment($attachment);
             }
 
             return;
         }
 
         $this->phpMailer->addAddress($attachments);
+    }
+
+    private function addBlindCarbonCopies(string | array $blindCarbonCopies): void
+    {
+        if (is_array($blindCarbonCopies)) {
+            foreach ($blindCarbonCopies as $blindCarbonCopy) {
+                $this->phpMailer->addAttachment($blindCarbonCopy);
+            }
+
+            return;
+        }
+
+        $this->phpMailer->addAddress($blindCarbonCopies);
     }
     
     private function clearEmailError(): void
