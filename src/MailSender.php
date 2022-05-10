@@ -34,8 +34,8 @@ class MailSender
         string $subject,
         string $body,
         string | array $addresses,
-        string | array $attachments          = [],
-        string | array $carbonCopies         = [],
+        string | array $attachments       = [],
+        string | array $carbonCopies      = [],
         string | array $blindCarbonCopies = []
     ): bool
     {
