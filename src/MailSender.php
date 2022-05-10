@@ -12,17 +12,17 @@ class MailSender
     // Server settings
     const SERVER_HOST    = 'smtp.gmail.com';
     const SERVER_PORT    = 587;
-    const SERVER_USER    = 'felizardo.chirindja@gmail.com';
-    const SERVER_PASS    = 'ZardoChiri5694';
     const SERVER_SECURE  = 'TLS';
     const SERVER_CHARSET = 'UTF-8';
     
     // sender settings
-    const SENDER_EMAIL = self::SERVER_USER;
     const SENDER_NAME  = 'Felizardo Chirindja';
     
     public function __construct(
-        private PHPMailer $phpMailer
+        private PHPMailer $phpMailer,
+        private string    $senderEmail,
+        private string    $senderUsername,
+        private string    $senderPassword
     ) { }
 
     public function getEmailError(): string
@@ -45,24 +45,17 @@ class MailSender
             $this->phpMailer->isSMTP();
             $this->phpMailer->Host       = self::SERVER_HOST;
             $this->phpMailer->SMTPAuth   = true;
-            $this->phpMailer->Username   = self::SERVER_USER;
-            $this->phpMailer->Password   = self::SERVER_PASS;
+            $this->phpMailer->Username   = $this->senderEmail;
+            $this->phpMailer->Password   = $this->senderPassword;
             $this->phpMailer->SMTPSecure = self::SERVER_SECURE;
             $this->phpMailer->Port       = self::SERVER_PORT;
             $this->phpMailer->CharSet    = self::SERVER_CHARSET;
 
-            $this->phpMailer->setFrom(self::SENDER_EMAIL, self::SENDER_NAME);
-   
-            // add addresses
+            $this->phpMailer->setFrom($this->senderEmail, $this->senderUsername);
+            
             $this->addAddresses($addresses);
-
-            // add attachments
             $this->addAttachments($attachments);
-
-            // add ccs
             $this->addCarbonCopies($carbonCopies);
-
-            // add bccs
             $this->addBlindCarbonCopies($blindCarbonCopies);
 
             $this->phpMailer->isHTML(true);
