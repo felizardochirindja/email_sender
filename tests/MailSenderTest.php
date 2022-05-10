@@ -15,10 +15,18 @@ class MailSenderTest extends TestCase
         // arrange
         $phpMailerStub = $this->createStub(PHPMailer::class);
         $phpMailerStub->method('send')->willReturn(true);
-        // $phpMailer = new PHPMailer();
+
+        $senderEmail    = '[Your email]';
+        $senderUsername = '[Your username]';
+        $senderPassword = '[Your password]';
 
         // act
-        $mailSender = new MailSender($phpMailerStub);
+        $mailSender = new MailSender(
+            $phpMailerStub, 
+            $senderEmail,
+            $senderUsername,
+            $senderPassword
+        );
 
         // assert
         $this->assertTrue($mailSender->sendEmail(
@@ -33,10 +41,18 @@ class MailSenderTest extends TestCase
         // arrange
         $phpMailerStub = $this->createStub(PHPMailer::class);
         $phpMailerStub->method('send')->willReturn(false);
-        // $phpMailer = new PHPMailer();
+        
+        $senderEmail    = '[Your email]';
+        $senderUsername = '[Your username]';
+        $senderPassword = '[Your password]';
 
         // act
-        $mailSender = new MailSender($phpMailerStub);
+        $mailSender = new MailSender(
+            $phpMailerStub, 
+            $senderEmail,
+            $senderUsername,
+            $senderPassword
+        );
 
         // assert
         $this->assertFalse($mailSender->sendEmail(
