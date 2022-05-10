@@ -57,10 +57,7 @@ class MailSender
             $this->addAddresses($addresses);
 
             // add attachments
-            $attachments = is_array($attachments) ? $attachments : [$attachments];
-            foreach ($attachments as $attachment) {
-                $this->phpMailer->addAttachment($attachment);
-            }
+            $this->addAttachments($attachments);
 
             // add ccs
             $ccs = is_array($ccs) ? $ccs : [$ccs];
@@ -96,6 +93,19 @@ class MailSender
         }
 
         $this->phpMailer->addAddress($addresses);
+    }
+
+    private function addAttachments(string | array $attachments): void
+    {
+        if (is_array($attachments)) {
+            foreach ($attachments as $attachment) {
+                $this->phpMailer->addAddress($attachment);
+            }
+
+            return;
+        }
+
+        $this->phpMailer->addAddress($attachments);
     }
     
     private function clearEmailError(): void
