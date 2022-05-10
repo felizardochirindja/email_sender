@@ -1,15 +1,14 @@
 <?php
 
-namespace App;
+namespace MailSender;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as MailException;
 
-class Email
+class MailSender
 {
-    private PHPMailer $phpMailer;
-    private string    $emailError;
-
+    private string $emailError;
+    
     // Server settings
     const SERVER_HOST    = 'smtp.gmail.com';
     const SERVER_PORT    = 587;
@@ -17,15 +16,14 @@ class Email
     const SERVER_PASS    = 'ZardoChiri5694';
     const SERVER_SECURE  = 'TLS';
     const SERVER_CHARSET = 'UTF-8';
-
+    
     // sender settings
     const SENDER_EMAIL = self::SERVER_USER;
     const SENDER_NAME  = 'Felizardo Chirindja';
-
-    public function __construct()
-    {
-        $this->phpMailer = new PHPMailer(true);
-    }
+    
+    public function __construct(
+        private PHPMailer $phpMailer
+    ) { }
 
     public function getEmailError(): string
     {
